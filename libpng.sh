@@ -111,10 +111,12 @@ buildLibpngForIPhoneOS()
 
     echo Building Libpng for iPhoneSimulator
     PLATFORM=iPhoneSimulator
+    ARCHS="-arch i386 -arch x86_64"
+    EXTRA_COMPILER_FLAGS=""
     SYSROOT=$XCODE_ROOT/Platforms/$PLATFORM.platform/Developer/SDKs/${PLATFORM}${IPHONE_SDKVERSION}.sdk
     echo "isysroot is $SYSROOT"
     HOST="i386-apple-darwin11" # probably exact value is not used, needed to avoid configure script wanting to run the built executable
-    export CFLAGS="-O3 -arch i386 -arch x86_64 -isysroot $SYSROOT -mios-simulator-version-min=${MIN_IOS_VERSION} -Wno-error-implicit-function-declaration"
+    export CFLAGS="-O3 $ARCHS -isysroot $SYSROOT -mios-simulator-version-min=${MIN_IOS_VERSION} -Wno-error-implicit-function-declaration $EXTRA_COMPILER_FLAGS"
     make distclean
     ./configure --host=$HOST --prefix=$PREFIXDIR/iphonesim-build --disable-dependency-tracking --enable-static=yes --enable-shared=no
     make
@@ -123,10 +125,12 @@ buildLibpngForIPhoneOS()
 
     echo Building Libpng for iPhone
     PLATFORM=iPhoneOS
+    ARCHS="-arch armv7 -arch armv7s -arch arm64"
+    EXTRA_COMPILER_FLAGS="-fembed-bitcode"
     SYSROOT=$XCODE_ROOT/Platforms/$PLATFORM.platform/Developer/SDKs/${PLATFORM}${IPHONE_SDKVERSION}.sdk
     echo "isysroot is $SYSROOT"
     HOST="arm-apple-darwin64"
-	export CFLAGS="-O3 -arch armv7 -arch armv7s -arch arm64 -isysroot $SYSROOT -mios-version-min=${MIN_IOS_VERSION}"
+	export CFLAGS="-O3 $ARCHS -isysroot $SYSROOT -mios-version-min=${MIN_IOS_VERSION} $EXTRA_COMPILER_FLAGS"
     make distclean
     ./configure --host=$HOST --prefix=$PREFIXDIR/iphone-build --disable-dependency-tracking --enable-static=yes --enable-shared=no
     make
