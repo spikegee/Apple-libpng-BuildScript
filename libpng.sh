@@ -20,6 +20,9 @@
 
 : ${XCODE_ROOT:=`xcode-select -print-path`}
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+pushd $SCRIPT_DIR
+
 : ${TARBALLDIR:=`pwd`}
 : ${SRCDIR:=`pwd`/src}
 : ${IOSBUILDDIR:=`pwd`/ios/build}
@@ -260,5 +263,6 @@ scrunchAllLibsTogetherInOneLibPerPlatform
 buildFramework $IOSFRAMEWORKDIR $IOSBUILDDIR
 
 echo "Completed successfully"
+popd
 
 #===============================================================================
